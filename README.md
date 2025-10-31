@@ -93,7 +93,7 @@ Improve dashboard analytics
 💬 Author
 
 Sami Qandeel
-📍 Port Said University – Faculty of Computers and Information
+📍 Port Said University – Faculty of Technology and Information Systems
 💼 ASP.NET Developer
 
 🔗 linkedin.com/in/sami-qandeel-999487351
