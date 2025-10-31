@@ -1,0 +1,57 @@
+﻿@model Book
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "_DetailsLayout";
+}
+
+<div class="container my-5 d-flex justify-content-center">
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden" style="max-width: 900px; width: 100%;">
+        <div class="row g-0">
+
+            <!-- الصورة -->
+            <div class="col-md-5 bg-light d-flex align-items-center justify-content-center p-3">
+                <div class="rounded-3 overflow-hidden shadow-sm"
+                     style="width: 100%; height: 380px; background-color: #f8f9fa;">
+                    <img src="/images/@Model.url_image"
+                         alt="@Model.Title"
+                         asp-append-version="true"
+                         class="img-fluid w-100 h-100"
+                         style="object-fit: cover;">
+                </div>
+            </div>
+
+            <!-- البيانات -->
+            <div class="col-md-7 p-4">
+                <div class="card-body">
+                    <h2 class="fw-bold mb-3 text-primary">@Model.Title</h2>
+                    <p class="text-muted mb-2"><strong>Author:</strong> @Model.Author</p>
+                    <p class="text-muted mb-2"><strong>Year:</strong> @Model.Year</p>
+                    <p class="text-muted mb-2"><strong>Price:</strong> @Model.Price.ToString("C")</p>
+                    <p class="@(Model.IsAvailable ? "text-success fw-semibold" : "text-danger fw-semibold")">
+                        @(Model.IsAvailable ? "Available" : "Not Available")
+                    </p>
+
+                    <div class="mt-4">
+                        @if (User.IsInRole("owner") || User.IsInRole("Librian"))
+                        {
+                            <a asp-controller="Books" asp-action="Edit" asp-route-id="@Model.Id"
+                               class="btn btn-warning px-4 me-2">Edit</a>
+                            <a asp-controller="Books" asp-action="Delete" asp-route-id="@Model.Id"
+                               class="btn btn-danger px-4 me-2">Delete</a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.Id"
+                               class="btn btn-success px-4 me-2">Add to Cart</a>
+                        }
+
+                        <a asp-controller="Library" asp-action="Exist_Book" asp-route-id="@Model.LibraryId"
+                           class="btn btn-secondary px-4">Back To List</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

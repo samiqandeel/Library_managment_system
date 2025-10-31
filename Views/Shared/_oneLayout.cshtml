@@ -1,0 +1,180 @@
+﻿@{
+    Layout = null; // Layout نفسها مفيهاش Layout تانية
+
+     // 1. جلب البيانات من قاعدة البيانات
+     // !!! غيّر "Libraries" إلى اسم الجدول الحقيقي للفروع/المكتبات في الـ DbContext
+     var allBranches = DbContext.Libraries.ToList();
+
+    // 1. متغير افتراضي لاسم المكتبة
+    string libraryName = " (فرع غير محدد) ";
+
+    // 2. جلب الـ ID من الـ Claim (كـ string)
+    var libraryIdClaim = User.Claims.FirstOrDefault(c => c.Type == "ClaimAddress")?.Value;
+
+    // 3. التأكد أن الـ ID موجود وأنه رقم صحيح
+    if (int.TryParse(libraryIdClaim , out int libraryId))
+    {
+        // 4. البحث في قاعدة البيانات باستخدام الـ ID
+        // !!! غيّر "Libraries" إلى اسم جدول المكتبات في الـ DbContext
+        // !!! غيّر "Address" إلى اسم العمود الذي تريد عرضه (مثل Name أو Address)
+        var library = DbContext.Libraries.FirstOrDefault(l => l.Id == libraryId);
+
+        // 5. إذا وجدنا المكتبة، نغيّر الاسم
+        if (library != null)
+        {
+            libraryName = library.Address; // أو library.Name مثلاً
+        }
+    }
+
+                
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>@ViewData["Title"] - Library System</title> 
+
+    @* @User.Identity.Name *@
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/css/styles.css" rel="stylesheet" />
+</head>
+<body>
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="/"> @User.Identity.Name  </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+
+                    <li class="nav-item">
+                        <a class="nav-link active" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" asp-controller="Books" asp-action="index">All Books</a>
+                    </li>
+
+                    <li class="nav-item dropdown ms-auto">
+
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Branches
+                        </a>
+
+                        <ul class="dropdown-menu">
+
+                            @foreach (var branch in allBranches)
+                            {
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Library" asp-action="Exist_Book" asp-route-id="@branch.Id">
+                                        @branch.Address
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+
+                
+                  
+
+                      @if(User.IsInRole("owner") == true)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" asp-controller="Role" asp-action="AddRole">Add Role</a>
+                    
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" asp-controller="Librian" asp-action="GetAllLibrian"> Librians</a>
+                    
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" asp-controller="Library" asp-action="Index"> Libraries </a>
+
+                        </li>
+                    }
+                    @if (User.IsInRole("Librian") == true || User.IsInRole("owner") == true )
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" asp-controller="Order" asp-action="MyOrders"> The Orders </a>
+
+                        </li>
+                    }
+
+                    @if (User.Identity.IsAuthenticated == true
+                                        && User.IsInRole("Librian") == false
+                                        && User.IsInRole("owner") == false)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link active" asp-controller="Cart" asp-action="MyOrder">My Order</a>
+                        </li>
+                    }
+
+                    @if (User.Identity.IsAuthenticated == true)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="signout">Log Out</a>
+                        </li>
+
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Sign In</a>
+                        </li>
+                    }
+
+                </ul>
+
+                <form class="d-flex">
+                    <a asp-controller="Cart" asp-action="GetCart" class="btn btn-outline-dark">
+                        <i id="cartCount" class="bi-cart-fill me-1"></i>
+                        Cart
+                    </a>
+                </form>
+            </div>
+        </div>
+    </nav>
+                
+
+    <!-- Header-->
+    <header class="hero-header d-flex align-items-center">
+        <!-- الطبقة الشفافة -->
+        <div class="overlay"></div>
+
+    </header>
+
+
+    <!-- مكان عرض الـViews -->
+    <main class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            @RenderBody()
+        </div>
+    </main>
+
+    <!-- Footer-->
+    <footer class="py-5 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; Library System 2025</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="/js/scripts.js"></script>
+
+
+
+</body>
+</html>

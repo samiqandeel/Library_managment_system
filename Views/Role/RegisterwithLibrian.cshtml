@@ -1,0 +1,55 @@
+﻿@model RegisterUserViewModel
+
+@{
+    ViewData["Title"] = "Register Librarian";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center text-primary">Register Librarian Account</h2>
+    <hr />
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form asp-action="RegisterwithLibrian" method="post" class="shadow p-4 rounded bg-light">
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" placeholder="Enter email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" placeholder="Enter full name" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label"></label>
+                    <input asp-for="Password" type="password" class="form-control" placeholder="Enter password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Confirmedpassword" class="form-label"></label>
+                    <input asp-for="Confirmedpassword" type="password" class="form-control" placeholder="Confirm password" />
+                    <span asp-validation-for="Confirmedpassword" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Address" class="form-label">Branch</label>
+                    <select asp-for="Address" class="form-select" asp-items="ViewBag.Address">
+                        <option value="">Select Branch </option>
+                    </select>
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-controller="Librian" asp-action="GetAllLibrian" class="btn btn-outline-dark px-4"> Back to List</a>
+                    <input type="submit" value="Create Account" class="btn btn-primary px-4" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

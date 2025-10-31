@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Book>
+
+@{
+    ViewData["Title"] = "Books";
+    Layout = "_oneLayout";
+}
+
+<h2 class="mb-4 text-center" style="color-rendering:auto"> Click For Details </h2>
+
+
+<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+    @foreach (var item in Model)
+    {
+        <div class="col mb-5">
+            <div class="card h-100">
+                <!-- Book image-->
+
+                <img class="card-img-top" 
+                asp-append-version = "true" 
+                src="/images/@item.url_image" 
+                alt="Book cover" style="height:250px; object-fit:cover;" />
+                <!-- Book details-->
+
+                <div class="card-body p-4">
+                    <div class="text-center">
+                        <!-- Book title-->
+                        <h5 class="fw-bolder">@item.Title</h5>
+                        <p class="mb-1">Author: @item.Author</p>
+                        <p class="mb-1">Year: @item.Year</p>
+                        <p class="mb-1">Price: @item.Price</p>
+                        <p class="mb-1">Available: @(item.IsAvailable ? "Yes" : "No")</p>
+                        <p class="small text-muted">Library: @item.Library?.Name - (@item.Library?.Address)</p>
+                    </div>
+                </div>
+                <!-- Book actions-->
+                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                    <div class="text-center">
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-dark mt-auto">Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

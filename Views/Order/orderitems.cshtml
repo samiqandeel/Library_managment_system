@@ -1,0 +1,48 @@
+﻿@model Order
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<h2 class="mb-3">📖 Detiels Order With Number @Model.OrderId</h2>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <p><strong>number user :</strong> @Model.UserId</p>
+        <p><strong> User Name:</strong> @Model.User_Name</p>
+        <p><strong> Date:</strong> @Model.OrderDate.ToString("yyyy/MM/dd HH:mm")</p>
+        <p><strong>Total All:</strong> @Model.TotalAmount</p>
+    </div>
+</div>
+
+@if (Model.OrderItems == null || !Model.OrderItems.Any())
+{
+    <div class="alert alert-warning">Order is Empty </div>
+}
+else
+{
+    <h4>📚 Book in this Order</h4>
+    <table class="table table-hover text-center align-middle">
+        <thead class="table-secondary">
+            <tr>
+                <th> Book Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderItems)
+            {
+                <tr>
+                    <td>@item.Titel</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Price</td>
+                    <td>@(item.Quantity* item.Price)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<a asp-action="MyOrders" class="btn btn-secondary mt-3"> Back To All Orders </a>
+

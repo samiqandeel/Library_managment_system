@@ -1,0 +1,34 @@
+﻿@model List<ApplicationUser>
+@{
+    ViewData["Title"] = "Librians";
+    Layout = "_oneLayout";
+}
+
+<h2>Librarians</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>
+                    <form asp-controller="Librian" asp-action="RemoveLibrian" asp-route-Id="@user.Id" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger">Remove The Librian</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    <a class="btn btn-primary" asp-controller="Role" asp-action="RegisterwithLibrian">Add new Librian</a>
+</div>

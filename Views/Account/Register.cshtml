@@ -1,0 +1,58 @@
+﻿@model RegisterUserViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center text-primary">Create New Account</h2>
+    <hr />
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form asp-action="Register" method="post" class="shadow p-4 rounded bg-light">
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label"></label>
+                    <input asp-for="Password" type="password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Confirmedpassword" class="form-label"></label>
+                    <input asp-for="Confirmedpassword" type="password" class="form-control" />
+                    <span asp-validation-for="Confirmedpassword" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Address" class="form-label">Branch</label>
+                    <select asp-for="Address" class="form-select" asp-items="ViewBag.Address">
+                        <option value="">Select Branch </option>
+                    </select>
+                </div>
+
+                <div class="text-center">
+                    <input type="submit" value="Create Account" class="btn btn-primary w-100" />
+                </div>
+
+                <div class="mt-3 text-center">
+                    <span>Already have an account? </span>
+                    <a asp-action="Login" class="text-decoration-none"> Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
